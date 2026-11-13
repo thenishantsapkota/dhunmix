@@ -1,0 +1,104 @@
+@import 'tailwindcss';
+
+/*
+  Dhunmix design tokens.
+  Dark only, by design: DJs work in dim venues, where a light screen blinds the DJ and is visible to the room.
+  One accent (marigold, the colour of wedding garlands). Deck B's identity colour is a neutral, not a second accent.
+  Shapes: panels 16px, controls 10px, round transport buttons are full circles.
+*/
+@theme {
+  --font-sans: 'Geist Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'Geist Mono Variable', ui-monospace, monospace;
+
+  --color-ink-950: #0a0a0c;
+  --color-ink-900: #111114;
+  --color-ink-850: #16161a;
+  --color-ink-800: #1d1d22;
+  --color-ink-700: #2a2a31;
+  --color-ink-500: #6b6b76;
+  --color-ink-400: #8f8f9a;
+  --color-ink-200: #d4d4da;
+  --color-ink-100: #ececf0;
+
+  --color-marigold: #f0a63a;
+  --color-marigold-dim: #f0a63a33;
+  --color-deck-b: #cfd2dc;
+  --color-danger: #f0715a;
+
+  --radius-panel: 16px;
+  --radius-control: 10px;
+
+  --text-2xs: 10px;
+  --text-2xs--line-height: 14px;
+
+  --shadow-key: inset 0 -3px 0 rgb(0 0 0 / 0.2);
+  --shadow-pop: 0 12px 32px rgb(0 0 0 / 0.5);
+}
+
+/* Named layouts instead of arbitrary values. */
+@utility grid-cols-track {
+  grid-template-columns: 108px 1fr 56px 44px; /* load A/B + play next, title, BPM, key */
+}
+@utility grid-cols-track-wide {
+  grid-template-columns: 108px 1fr 64px 48px 72px 48px 28px; /* + energy, time, status */
+}
+@utility max-h-list {
+  max-height: 70dvh;
+}
+
+@layer base {
+  html {
+    background: var(--color-ink-950);
+    color: var(--color-ink-100);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -webkit-tap-highlight-color: transparent;
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-marigold);
+    outline-offset: 2px;
+  }
+  button { cursor: pointer; }
+  button:disabled { cursor: default; }
+}
+
+/* Native range input restyled as a hardware fader. */
+@layer components {
+  .fader {
+    appearance: none;
+    background: transparent;
+    width: 100%;
+    height: 32px;
+    --fill: var(--color-marigold);
+  }
+  .fader::-webkit-slider-runnable-track {
+    height: 4px;
+    border-radius: 2px;
+    background: var(--color-ink-700);
+  }
+  .fader::-webkit-slider-thumb {
+    appearance: none;
+    width: 28px;
+    height: 18px;
+    margin-top: -7px;
+    border-radius: 5px;
+    background: linear-gradient(var(--color-ink-200), var(--color-ink-400));
+    box-shadow: inset 0 -2px 0 rgb(0 0 0 / 0.25), 0 2px 6px rgb(0 0 0 / 0.5);
+    border: 0;
+  }
+  .fader::-moz-range-track { height: 4px; border-radius: 2px; background: var(--color-ink-700); }
+  .fader::-moz-range-thumb { width: 28px; height: 18px; border-radius: 5px; border: 0; background: var(--color-ink-200); }
+
+  .fader-v {
+    writing-mode: vertical-lr;
+    direction: rtl;
+    width: 32px;
+    height: 100%;
+  }
+  .fader-v::-webkit-slider-runnable-track { width: 4px; height: auto; }
+  .fader-v::-webkit-slider-thumb { width: 18px; height: 28px; margin-top: 0; margin-left: -7px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
